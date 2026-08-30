@@ -1,23 +1,17 @@
 {
-  "name": "@urltracking/api",
+  "name": "worker",
   "version": "1.0.0",
-  "private": true,
-  "description": "Fastify API for the Bulk URL Health Checker",
+  "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "node --env-file=.env ./node_modules/tsx/dist/cli.mjs watch src/server.ts",
-    "build": "tsc",
-    "start": "node dist/server.js"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "module",
   "dependencies": {
-    "@urltracking/shared": "workspace:*",
     "bullmq": "^6.3.2",
-    "dotenv": "^17.4.2",
-    "fastify": "^5.12.1",
     "ioredis": "^6.0.0",
     "pg": "^8.23.0"
   },
