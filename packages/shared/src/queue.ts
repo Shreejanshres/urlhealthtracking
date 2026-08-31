@@ -5,3 +5,9 @@ export interface UrlCheckJobData {
   batchId: string;
   url: string;
 }
+
+export interface UrlCheckResult {
+  httpStatus: number;
+  responseTimeMs: number;
+  pageTitle: string | null;
+}

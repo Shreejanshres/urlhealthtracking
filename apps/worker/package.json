@@ -4,14 +4,18 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "tsx watch src/worker.ts",
+    "build": "tsc",
+    "start": "node dist/worker.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "module",
   "dependencies": {
+    "@urltracking/shared": "workspace:*",
     "bullmq": "^6.3.2",
+    "dotenv": "^17.4.2",
     "ioredis": "^6.0.0",
     "pg": "^8.23.0"
   },

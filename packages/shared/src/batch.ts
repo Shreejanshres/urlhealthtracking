@@ -1,26 +1,32 @@
 export type BatchStatus = 'queued' | 'processing' | 'completed' | 'cancelled';
 export type UrlStatus = 'pending' | 'checking' | 'succeeded' | 'failed' | 'cancelled';
 
-export interface Batch {
+export interface BatchSummary {
   id: string;
-  status: BatchStatus;
+  status: string;
   totalUrls: number;
-  completedUrls: number;
+  completedUrls: number;   // succeeded
   failedUrls: number;
+  pendingUrls: number;     // queued + checking
   createdAt: string;
-  updatedAt: string;
 }
 
-export interface UrlRecord {
+export interface BatchListResponse {
+  batches: BatchSummary[];
+}
+
+export interface UrlResult {
   id: string;
-  batchId: string;
   url: string;
-  status: UrlStatus;
+  status: string;
   httpStatus: number | null;
-  responseTimeMs: number | null;
+  responseTime: number | null;
   pageTitle: string | null;
   error: string | null;
   attempts: number;
-  createdAt: string;
-  updatedAt: string;
+}
+
+export interface BatchDetailResponse {
+  batch: BatchSummary;
+  urls: UrlResult[];
 }

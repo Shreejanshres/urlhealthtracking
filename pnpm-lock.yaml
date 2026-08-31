@@ -243,9 +243,15 @@ importers:
 
   apps/worker:
     dependencies:
+      '@urltracking/shared':
+        specifier: workspace:*
+        version: link:../../packages/shared
       bullmq:
         specifier: ^6.3.2
         version: 6.3.2(ioredis@6.0.0)(pg@8.23.0)
+      dotenv:
+        specifier: ^17.4.2
+        version: 17.4.2
       ioredis:
         specifier: ^6.0.0
         version: 6.0.0
