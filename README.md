@@ -185,3 +185,8 @@ GET    /batches/:id/events       Server-Sent Events stream of live updates for a
 
 - A submitted URL that responds with a non-2xx HTTP status (e.g. 404, 500) is recorded as a valid, final result — not retried — since the server did respond. Only network-level failures (timeout, DNS failure, connection refused) are treated as retryable.
 - Duplicate URLs within a single batch submission are each treated as independent checks (not deduplicated), matching the architecture doc's stated behavior that "each URL submission represents a separate check."
+
+
+
+###Loom video:
+https://www.loom.com/share/97bad6359d10407f84aa3db7a373c4c8
