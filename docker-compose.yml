@@ -2,25 +2,22 @@ services:
   postgres:
     image: postgres:17
     container_name: urltracking-postgres
-    restart: unless-stopped
+    ports: ["5432:5432"]
     environment:
+      POSTGRES_DB: urltracking
       POSTGRES_USER: urltracking
       POSTGRES_PASSWORD: urltracking
-      POSTGRES_DB: urltracking
-    ports:
-      - "5432:5432"
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - pgdata:/var/lib/postgresql/data
+      - ./docker/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
 
   redis:
     image: redis:7-alpine
     container_name: urltracking-redis
-    restart: unless-stopped
-    ports:
-      - "6379:6379"
+    ports: ["6379:6379"]
     volumes:
-      - redis_data:/data
+      - redisdata:/data
 
 volumes:
-  postgres_data:
-  redis_data:
+  pgdata:
+  redisdata:

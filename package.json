@@ -1,11 +1,11 @@
 {
   "name": "urltracking",
   "version": "1.0.0",
-  "private" : true,
+  "private": true,
   "description": "Bulk Url Health Checker",
   "main": "index.js",
   "scripts": {
-    "dev": "pnpm --parallel --filter './apps/*' dev",
+    "dev": "docker compose up -d && wait-on tcp:5432 tcp:6379 && pnpm --parallel --filter './apps/*' dev",
     "build": "pnpm --recursive build",
     "test": "pnpm --recursive test"
   },
@@ -19,5 +19,8 @@
       "onFail": "download"
     }
   },
-  "type": "module"
+  "type": "module",
+  "devDependencies": {
+    "wait-on": "^9.1.0"
+  }
 }

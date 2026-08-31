@@ -106,10 +106,7 @@ app.post('/batches/:id/retry-failed', async (request, reply) => {
   if (result.error) {
     return reply.status(400).send({ error: result.message });
   }
-await app.register(cors, {
-  origin: 'http://localhost:3000', // your Next.js dev origin
-  credentials: true,
-});
+
   return reply.status(200).send({ batchId: result.batchId, retriedCount: result.retriedCount });
 });
 

@@ -59,8 +59,8 @@ export async function listBatchesRepo() {
       b.id,
       b.status,
       b.total_urls,
-      COUNT(u.id) FILTER (WHERE u.status = 'succeeded') AS completed_urls,
-      COUNT(u.id) FILTER (WHERE u.status = 'failed')    AS failed_urls,
+      b.completed_urls AS completed_urls,
+      b.failed_urls    AS failed_urls,
       COUNT(u.id) FILTER (WHERE u.status IN ('queued', 'checking')) AS pending_urls,
       b.created_at
     FROM batches b

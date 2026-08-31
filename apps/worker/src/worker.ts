@@ -6,6 +6,8 @@ import { checkUrl } from './service/urlChecker.js';
 import { URL_CHECK_QUEUE, UrlCheckJobData } from '@urltracking/shared';
 import { invalidateBatchListCache } from './cache/batchListCache.js';
 import { publishUrlUpdate } from './pubsub/publisher.js';
+import { updateBatchProgress } from './service/batchProgress.js';
+
 
 const worker = new Worker<UrlCheckJobData>(
   URL_CHECK_QUEUE,
@@ -44,6 +46,7 @@ const worker = new Worker<UrlCheckJobData>(
        WHERE id = $1`,
       [urlId, result.httpStatus, result.responseTimeMs, result.pageTitle]
     );
+    await updateBatchProgress(batchId);
     await publishUrlUpdate(batchId, urlId, 'succeeded');
     await invalidateBatchListCache();
 
@@ -58,20 +61,21 @@ const worker = new Worker<UrlCheckJobData>(
 
 worker.on('failed', async (job, err) => {
   if (!job) return;
-    console.error(    `[FAILED] ${job.data.url} — attemptsMade=${job.attemptsMade}, maxAttempts=${job.opts.attempts}, error=${err.message}`
-);
+  console.error(
+    `[FAILED] ${job.data.url} — attemptsMade=${job.attemptsMade}, maxAttempts=${job.opts.attempts}, error=${err.message}`
+  );
 
   const attemptsMade = job.attemptsMade;
   const maxAttempts = job.opts.attempts ?? 3;
 
   if (attemptsMade >= maxAttempts) {
     await pool.query(
-      `UPDATE urls SET status = 'failed', error = $2, attempts = attempts + 1 WHERE id = $1`,
-      [job.data.urlId, err.message]
+      `UPDATE urls SET status = 'failed', error = $2, attempts = $3 WHERE id = $1`,
+      [job.data.urlId, err.message, attemptsMade]
     );
+    await updateBatchProgress(job.data.batchId);
     await publishUrlUpdate(job.data.batchId, job.data.urlId, 'failed');
-      await invalidateBatchListCache();
-
+    await invalidateBatchListCache();
   }
 });
 
