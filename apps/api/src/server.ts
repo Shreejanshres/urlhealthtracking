@@ -1,4 +1,6 @@
 import Fastify from "fastify";
+import cors from '@fastify/cors';
+
 import { checkDatabaseConnection } from "./db/client.js";
 import { createBatch, listBatches, getBatchById,cancelBatch,retryFailedUrls } from "./services/batchService.js"; 
 import { getCachedBatchList, setCachedBatchList } from './cache/batchListCache.js';
@@ -8,7 +10,10 @@ const app = Fastify({
   logger: true,
 });
 
-
+await app.register(cors, {
+  origin: 'http://localhost:3000',
+  credentials: true,
+});
 
 const start = async () => {
   try { 
@@ -101,7 +106,10 @@ app.post('/batches/:id/retry-failed', async (request, reply) => {
   if (result.error) {
     return reply.status(400).send({ error: result.message });
   }
-
+await app.register(cors, {
+  origin: 'http://localhost:3000', // your Next.js dev origin
+  credentials: true,
+});
   return reply.status(200).send({ batchId: result.batchId, retriedCount: result.retriedCount });
 });
 
@@ -112,6 +120,7 @@ app.get('/batches/:id/events', async (request, reply) => {
     'Content-Type': 'text/event-stream',
     'Cache-Control': 'no-cache',
     'Connection': 'keep-alive',
+    'Access-Control-Allow-Origin': 'http://localhost:3000',
   });
 
   const send = (data: unknown) => {

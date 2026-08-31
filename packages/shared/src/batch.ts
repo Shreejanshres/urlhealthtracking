@@ -3,7 +3,7 @@ export type UrlStatus = 'pending' | 'checking' | 'succeeded' | 'failed' | 'cance
 
 export interface BatchSummary {
   id: string;
-  status: string;
+  status: BatchStatus;
   totalUrls: number;
   completedUrls: number;   // succeeded
   failedUrls: number;
@@ -18,7 +18,7 @@ export interface BatchListResponse {
 export interface UrlResult {
   id: string;
   url: string;
-  status: string;
+  status: UrlStatus;
   httpStatus: number | null;
   responseTime: number | null;
   pageTitle: string | null;
@@ -29,4 +29,9 @@ export interface UrlResult {
 export interface BatchDetailResponse {
   batch: BatchSummary;
   urls: UrlResult[];
+}
+
+export interface CreateBatchResponse {
+  batchId: string;
+  totalUrls: number;
 }

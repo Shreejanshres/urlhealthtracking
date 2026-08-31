@@ -73,6 +73,7 @@ export async function getBatchById(batchId: string) {
       id: u.id,
       url: u.url,
       status: u.status,
+      resonse_time : u.response_time_ms,
       httpStatus: u.http_status,
       responseTime: u.response_time,
       pageTitle: u.page_title,
